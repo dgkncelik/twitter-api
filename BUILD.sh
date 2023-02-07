@@ -1,1 +1,1 @@
-sudo docker build -t btslabs.io/twitter-scraper:latest .
+sudo docker build --no-cache -t btslabs.io/twitter-scraper:latest .
