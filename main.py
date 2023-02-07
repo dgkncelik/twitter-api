@@ -88,6 +88,9 @@ class TwitterScaper(object):
 
     def undefine_all_rules(self):
         rules = self.get_all_rules()
+        if "data" not in rules:
+            return []
+
         ids = list(map(lambda rule: rule["id"], rules["data"]))
         payload = {"delete": {"ids": ids}}
         response = requests.post(
