@@ -1,0 +1,10 @@
+- kurallari ekle 
+- kurallari gorntule
+- stream et
+- datanin tipini belirle
+- elasticsearch nasi yazabiliriz
+  - araya kafka mi koysak
+- kibana da goruntuleyebilir miyiz
+- AWSye nasil atsak bunu
+- linkedinden yaymamiz lazim ve discorddan
+- 
