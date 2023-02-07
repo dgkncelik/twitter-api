@@ -16,7 +16,7 @@ except exceptions.ConnectionError as err:
     client = None
 
 if client is not None:
-    all_indices = client.indices.get_alias("*")
+    all_indices = client.indices.get_alias("tweets")
     doc_count = 0
     for num, index in enumerate(all_indices):
         match_all = {
@@ -76,6 +76,5 @@ if client is not None:
         csv_file.close()
     # print the total time and document count at the end
     print("\nTOTAL DOC COUNT:", doc_count)
-
 # print the elapsed time
 print("TOTAL TIME:", time.time() - start_time, "seconds.")
