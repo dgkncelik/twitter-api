@@ -33,7 +33,17 @@ class TwitterScaper(object):
         _doc = {
             "text": doc["data"]["text"],
             "id": doc["data"]["id"],
+            "author_id": doc["data"]["author_id"],
+            "username": "",
+            "link": ""
         }
+
+        if "includes" in doc and "users" in doc["includes"]:
+            for u in doc["includes"]["users"]:
+                if u["id"] == _doc["author_id"]:
+                    _doc["username"] = u["username"]
+                    _doc["link"] = "https://twitter.com/%s/status/%s/" % (u["username"], doc["data"]["id"])
+
         resp = self.es_client.index(index="tweets", body=_doc)
         print(resp["result"])
         print("inserted: %s" % _doc)
@@ -92,7 +102,7 @@ class TwitterScaper(object):
 
     def start_stream(self):
         response = requests.get(
-            "https://api.twitter.com/2/tweets/search/stream", headers=self.auth, stream=True,
+            "https://api.twitter.com/2/tweets/search/stream?user.fields=username&expansions=author_id", headers=self.auth, stream=True,
         )
         print(response.status_code)
         if response.status_code != 200:
@@ -121,9 +131,9 @@ class TwitterScaper(object):
         self.read_credentials()
         self.read_rules()
         self.authenticate()
-        self.undefine_all_rules()
-        #self.define_all_rules()
-        #self.start_stream()
+        #self.undefine_all_rules()
+        self.define_all_rules()
+        self.start_stream()
 
 
 if __name__ == '__main__':
