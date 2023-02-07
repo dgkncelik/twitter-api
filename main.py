@@ -12,7 +12,7 @@ class TwitterScaper(object):
         self.credentials = {}
         self.auth = {}
         self.rules = {}
-        self.es_client = Elasticsearch("http://ec2-3-237-11-168.compute-1.amazonaws.com:9200")
+        self.es_client = Elasticsearch("http://ec2-3-237-11-168.compute-1.amazonaws.com:9200/")
         # self.mapping = '''
         # {
         #   "mappings":{
@@ -37,6 +37,7 @@ class TwitterScaper(object):
             "text": doc["data"]["text"],
             "id": doc["data"]["id"],
             "author_id": doc["data"]["author_id"],
+            "created_at": doc["data"]["created_at"],
             "username": "",
             "link": ""
         }
@@ -108,7 +109,7 @@ class TwitterScaper(object):
 
     def start_stream(self):
         response = requests.get(
-            "https://api.twitter.com/2/tweets/search/stream?user.fields=username&expansions=author_id", headers=self.auth, stream=True,
+            "https://api.twitter.com/2/tweets/search/stream?user.fields=username&expansions=author_id&tweet.fields=created_at", headers=self.auth, stream=True,
         )
         print(response.status_code)
         if response.status_code != 200:
