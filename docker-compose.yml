@@ -33,3 +33,5 @@ services:
   scraper:
     container_name: twitter_scraper
     image: btslabs.io/twitter-scraper:latest
+    depends_on:
+      - elasticsearch
