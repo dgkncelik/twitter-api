@@ -1,5 +1,5 @@
 {
   "rules": [
-    {"value": "mahalle OR cadde OR haber OR yıkılmış OR yıkıldı OR enkaz OR yardım", "tag": "tag1"}
+    {"value": "(mahalle OR cadde OR apartman OR sokak) AND (deprem OR yıkılmış OR yıkıldı OR enkaz OR yardım) -is:retweet", "tag": "tag1"}
   ]
 }

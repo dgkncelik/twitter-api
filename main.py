@@ -121,9 +121,9 @@ class TwitterScaper(object):
         self.read_credentials()
         self.read_rules()
         self.authenticate()
-        #self.undefine_all_rules()
-        self.define_all_rules()
-        self.start_stream()
+        self.undefine_all_rules()
+        #self.define_all_rules()
+        #self.start_stream()
 
 
 if __name__ == '__main__':
