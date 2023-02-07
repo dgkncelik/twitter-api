@@ -1,6 +1,10 @@
+import os
+
 import requests
 import json
 from elasticsearch import Elasticsearch
+
+ES_URL = os.environ.get("ELASTICSEARCH_URL", "http://elasticsearch:9200/")
 
 
 class TwitterScaper(object):
@@ -10,7 +14,7 @@ class TwitterScaper(object):
         self.credentials = {}
         self.auth = {}
         self.rules = {}
-        self.es_client = Elasticsearch("http://elasticsearch:9200/")
+        self.es_client = Elasticsearch(ES_URL)
         # self.mapping = '''
         # {
         #   "mappings":{

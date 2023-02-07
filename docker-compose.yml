@@ -33,5 +33,7 @@ services:
   scraper:
     container_name: twitter_scraper
     image: btslabs.io/twitter-scraper:latest
+    environment:
+      ELASTICSEARCH_URL: "http://ec2-3-237-11-168.compute-1.amazonaws.com:9200"
     depends_on:
       - elasticsearch
