@@ -81,7 +81,7 @@ class TwitterScaper(object):
             headers=self.auth,
             json=payload,
         )
-        if response.status_code != 201 or response.status_code != 200:
+        if response.status_code != 201 and response.status_code != 200:
             print(
                 "Cannot add rules (HTTP {}): {}".format(response.status_code, response.text)
             )

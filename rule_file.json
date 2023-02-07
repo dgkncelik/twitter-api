@@ -1,6 +1,7 @@
 {
   "rules": [
     {"value": "(mahalle OR cadde OR apartman OR sokak) -(is:retweet)", "tag": "tag1"},
-    {"value":  "mahsur OR \"mahsur kaldık\" OR \"enkaz altındayım\" -(is:retweet)", "tag": "tag2"}
+    {"value":  "(mahsur OR \"mahsur kaldık\" OR \"enkaz altındayım\") -(is:retweet)", "tag": "tag2"},
+    {"value":  "(\"göçük altındalar\" OR \"göçük altındayım\" OR \"göçük altındayız\") -(is:retweet)", "tag": "tag3"}
   ]
 }
