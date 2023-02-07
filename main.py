@@ -10,11 +10,33 @@ class TwitterScaper(object):
         self.credentials = {}
         self.auth = {}
         self.rules = {}
-        self.es_client = Elasticsearch("http://elasticsearch:9200/")
+        self.es_client = Elasticsearch("http://localhost:9200/")
+        # self.mapping = '''
+        # {
+        #   "mappings":{
+        #     "logs_june":{
+        #       "_timestamp":{
+        #         "enabled":"true"
+        #       },
+        #       "properties":{
+        #         "logdate":{
+        #           "type":"date",
+        #           "format":"dd/MM/yyy HH:mm:ss"
+        #         }
+        #       }
+        #     }
+        #   }
+        # }'''
+        self.es_client.indices.create(index="tweets", ignore=400)
 
     def insert_es(self, doc):
-        resp = self.es_client.index(index="tweets", document=doc)
+        _doc = {
+            "text": doc["data"]["text"],
+            "id": doc["data"]["id"],
+        }
+        resp = self.es_client.index(index="tweets", body=_doc)
         print(resp["result"])
+        print("inserted: %s" % _doc)
 
     def authenticate(self):
         self.auth = {
@@ -45,9 +67,26 @@ class TwitterScaper(object):
             headers=self.auth,
             json=payload,
         )
-        if response.status_code != 201:
-            raise Exception(
+        if response.status_code != 201 or response.status_code != 200:
+            print(
                 "Cannot add rules (HTTP {}): {}".format(response.status_code, response.text)
+            )
+        print(json.dumps(response.json()))
+
+    def undefine_all_rules(self):
+        rules = self.get_all_rules()
+        ids = list(map(lambda rule: rule["id"], rules["data"]))
+        payload = {"delete": {"ids": ids}}
+        response = requests.post(
+            "https://api.twitter.com/2/tweets/search/stream/rules",
+            headers=self.auth,
+            json=payload
+        )
+        if response.status_code != 200:
+            raise Exception(
+                "Cannot delete rules (HTTP {}): {}".format(
+                    response.status_code, response.text
+                )
             )
         print(json.dumps(response.json()))
 
@@ -65,7 +104,7 @@ class TwitterScaper(object):
         for response_line in response.iter_lines():
             if response_line:
                 json_response = json.loads(response_line)
-                print(json.dumps(json_response, indent=4, sort_keys=True))
+                # print(json.dumps(json_response, sort_keys=True))
                 self.insert_es(json_response)
 
     def read_credentials(self):
@@ -82,6 +121,7 @@ class TwitterScaper(object):
         self.read_credentials()
         self.read_rules()
         self.authenticate()
+        #self.undefine_all_rules()
         self.define_all_rules()
         self.start_stream()
 
