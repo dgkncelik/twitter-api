@@ -1,1 +1,1 @@
-sudo docker-compose -d up
+sudo docker-compose up -d
