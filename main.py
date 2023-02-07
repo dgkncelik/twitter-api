@@ -10,7 +10,7 @@ class TwitterScaper(object):
         self.credentials = {}
         self.auth = {}
         self.rules = {}
-        self.es_client = Elasticsearch("http://localhost:9200/")
+        self.es_client = Elasticsearch("http://elasticsearch:9200/")
         # self.mapping = '''
         # {
         #   "mappings":{
@@ -25,6 +25,7 @@ class TwitterScaper(object):
         #         }
         #       }
         #     }
+
         #   }
         # }'''
         self.es_client.indices.create(index="tweets", ignore=400)
@@ -131,7 +132,7 @@ class TwitterScaper(object):
         self.read_credentials()
         self.read_rules()
         self.authenticate()
-        #self.undefine_all_rules()
+        self.undefine_all_rules()
         self.define_all_rules()
         self.start_stream()
 
